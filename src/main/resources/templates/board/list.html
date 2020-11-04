@@ -21,7 +21,7 @@
 			<tbody>
 		    	<tr th:each="board : ${boards}">
 					<th th:text="${board.id}"></th>
-					<th><a th:text="${board.title}" th:href="@{/board/form(id=${board.id})}"></a></td>
+					<th><a th:text="${board.title}" th:href="@{/board/form(id=${board.id})}"></a></th>
 					<td>홍길동</td>
 		    	</tr>
 		  	</tbody>
@@ -30,21 +30,37 @@
 		<nav aria-label="Page navigation example">
 			<ul class="pagination justify-content-center">
 				<li class="page-item" th:classappend="${1 == boards.pageable.pageNumber + 1} ? 'disabled'">
-					<a class="page-link" th:href="@{/board/list(page=${boards.pageable.pageNumber - 1})}" tabindex="-1" aria-disabled="true">Previous</a>
+					<a class="page-link" th:href="@{/board/list(page=${boards.pageable.pageNumber - 1}, searchText=${param.searchText})}">Previous</a>
 				</li>
 				
 				<li class="page-item" th:classappend="${i == boards.pageable.pageNumber + 1} ? 'disabled'" th:each="i : ${#numbers.sequence(startPage, endPage)}">
-					<a class="page-link" th:href="@{/board/list(page=${i - 1})}" th:text="${i}">페이지 수</a>
+					<a class="page-link" th:href="@{/board/list(page=${i - 1}, searchText=${param.searchText})}" th:text="${i}">페이지 수</a>
 				</li>
 			    
 			    <li class="page-item" th:classappend="${boards.totalPages == boards.pageable.pageNumber + 1} ? 'disabled'">
-					<a class="page-link" th:href="@{/board/list(page=${boards.pageable.pageNumber + 1})}">Next</a>
+					<a class="page-link" th:href="@{/board/list(page=${boards.pageable.pageNumber + 1}, searchText=${param.searchText})}">Next</a>
 			    </li>
 			</ul>
 		</nav>
 		
-		<div class="text-right">
+		<div class="d-flex justify-content-between">
+		
+		<div></div>
+		
+		<div>
+			<form class="form-inline" method="GET" th:action="@{/board/list}">
+			  	<div class="form-group mx-sm-3 mb-2">
+				    <label for="searchText" class="sr-only">검색</label>
+				    <input type="text" class="form-control" id="searchText" name="searchText" th:value="${param.searchText}" placeholder="내용을 입력하세요">
+				</div>
+				<button type="submit" class="btn btn-light mb-2">검색</button>
+			</form>
+		</div>
+		
+		<div>
 			<a type="button" class="btn btn-info" th:href="@{/board/form}">글쓰기</a>
+		</div>
+		
 		</div>
 
     </div>
